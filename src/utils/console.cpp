@@ -1,4 +1,5 @@
 #include "../imports.hpp"
+#include "../domain/thread.hpp"
 #include "console.hpp"
 #include "color.hpp"
 
@@ -13,7 +14,7 @@ namespace console {
     } while (false)
 
   fn nfo() {
-    return str("%s:", Yellow);
+    return str("%s%02d %s:", dynamic(thread::ID).get(), thread::ID, Yellow);
   }
 
   fn log(const char *format, ...) -> void {

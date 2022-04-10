@@ -11,4 +11,5 @@
 #include <cstddef>
 #include <iostream>
 #include <pthread.h>
+#include <omp.h>
 #include "utils/common.hpp"
