@@ -13,8 +13,14 @@ private:
     std::ifstream infile(path);
     usize n, m;
     infile >> n >> m;
-    vector<vector<usize>> jobs(m, vector<usize>(n));
-    for (var i = 0; i < m; i++) for (var j = 0; j < n; j++) infile >> jobs[i][j];
+    vector<vector<usize>> jobs(n, vector<usize>(m * 2));
+
+    for (var i = 0; i < n; i++)
+      for (var j = 0; j < m * 2; j += 2) {
+        infile >> jobs[i][j];
+        infile >> jobs[i][j + 1];
+      }
+
     return jobs;
   }
 };

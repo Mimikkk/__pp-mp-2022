@@ -11,12 +11,12 @@ public:
     Jobs = jobs;
     Name = name;
     N = jobs.size();
-    M = jobs.front().size();
+    M = jobs.front().size() / 2;
   }
 
   fn as_string() {
     std::stringstream ss;
-    ss << "Instance " << Name << ": " << M << " jobs, " << N << " machines." << std::endl;
+    ss << "Instance " << Name << ": " << N << " jobs, " << M << " machines." << std::endl;
     for (auto job: Jobs) {
       ss << "- ";
       for (auto machine: job) {

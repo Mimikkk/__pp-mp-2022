@@ -5,12 +5,12 @@ SOURCES=$(call rwildcard, src, *.cpp)
 HEADERS=$(call rwildcard, src, *.hpp)
 FLAGS=-g -lstdc++ -std=gnu++2a -fconcepts -fopenmp
 
-all: build read-abz5.txt
+all: build read-lao01.txt
 
 
 build: $(SOURCES) $(HEADERS)
 	gcc $(SOURCES) $(FLAGS) -o bin/solver
 
-read-abz5.txt:
+read-la01.txt:
 	cd ./bin
-	./solver abz5.txt
+	./solver la01.txt
