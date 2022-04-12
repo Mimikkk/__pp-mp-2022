@@ -13,34 +13,18 @@ fn create_schedule(const Instance &instance, const vector<usize> &order) {
   vector<usize> job_time(instance.N, 0);
 
   for (const auto &job: order) {
-    console::log("Job: %lu", job);
-    var job_step = job_state[job] * 2;
-    console::log("JobStep: %lu", job_step);
-    var machine = instance.Jobs[job_step][job];
-    console::log("Machine: %lu", machine);
-    job_state[job] += 1;
-
-    console::log("MachineTime: %lu", machine_time[machine]);
-    console::log("JobTime: %lu", job_time[job]);
+    var job_step = job_state[job]++ << 1;
+    var machine = instance.Jobs[job][job_step++];
 
     var start = std::max(machine_time[machine], job_time[job]);
-    console::log("Start: %lu", start);
-    var end = start + instance.Jobs[job][++job_step];
-    console::log("End: %lu", end);
+    var end = start + instance.Jobs[job][job_step];
 
     machine_time[machine] = end;
-    console::log("MachineTime: %lu", job);
     job_time[job] = end;
-    console::log("JobTime: %lu", job);
 
-    console::log("Machine State: %lu %lu", machine, machine_state[machine]);
-    schedule[machine][machine_state[machine]] = job;
-    console::log("1: %lu", job);
-    schedule[machine][machine_state[machine] + 1] = start;
-    console::log("2: %lu", job);
-    schedule[machine][machine_state[machine] + 2] = end;
-    machine_state[machine] += 3;
-    console::log("3: %lu", job);
+    schedule[machine][machine_state[machine]++] = job;
+    schedule[machine][machine_state[machine]++] = start;
+    schedule[machine][machine_state[machine]++] = end;
   }
   return schedule;
 }
@@ -58,9 +42,12 @@ public:
 
 fn find_makespan(vector<vector<usize>> schedule) {
   usize makespan = 0;
-  for (auto machine: schedule) {
-    if (machine.back() < makespan) makespan = machine.back();
+  for (let machine: schedule) {
+    if (machine.back() > makespan) makespan = machine.back();
   }
+
+  std::max_element(schedule.begin(), schedule.end(), [](let a, let b) { return a.back() < b.back(); });
+
   return makespan;
 }
 
@@ -70,9 +57,7 @@ fn find_lower_bound(Instance instance) {
   vector<usize> t(instance.M, 0);
   usize bound = 0;
 
-  for (var i = instance.N - 1; i >= 0; ++i) {
-    let job = instance.Jobs[i];
-
+  for (let &job: instance.Jobs) {
     var job_total_time = 0;
     for (var j = 1; j < job.size(); j += 2) job_total_time += job[j];
     if (job_total_time > bound) bound = job_total_time;
@@ -99,10 +84,12 @@ fn find_lower_bound(Instance instance) {
 
   return bound;
 }
+#include <vector>
 
 fn find_upper_bound(Instance instance) {
   usize bound = 0;
-  for (const auto &job: instance.Jobs) {
+  
+  for (let &job: instance.Jobs) {
     for (var i = 1; i < job.size(); i += 2) {
       bound += job[i];
     }

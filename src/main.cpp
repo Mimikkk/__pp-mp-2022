@@ -26,29 +26,29 @@ string str(vector<vector<usize>> schedule) {
 }
 
 fn main(i32 argc, byte **argv) -> i32 {
-  if (argc < 2) {
+  if (argc != 2) {
     console::error("Invalid use: %s <instance file>", argv[0]);
     console::error("Instance file should be located in resources/instances directory");
     exit(1);
   }
+  var filename = argv[1];
 
   thread::initialize();
 
-  var filename = argv[1];
   var path = fs::current_path() / "resources/instances" / filename;
   console::event("Reading: file '%s' at '%s'", path.filename().c_str(), path.c_str());
 
   var instance = OrlibReader::read(path);
-  console::info("Kurwa?? \n%s", str(instance.Jobs).c_str());
   console::info("Read instance: \n%s", instance.as_string().c_str());
+  console::info("UpperBound: %lu", find_upper_bound(instance));
+  console::info("LowerBound: %lu", find_lower_bound(instance));
 
   let order = create_order(instance);
   console::info("Order: %s", str(order).c_str());
-  let schedule = create_schedule(instance, order);
-  console::info("Order: %s", str(order).c_str());
-  console::info("Makespan: %lu", find_makespan(schedule));
-  console::info("Makespan: %lu", find_makespan(schedule));
-  console::info("Makespan: %lu", find_makespan(schedule));
 
+  let schedule = create_schedule(instance, order);
+  console::log("\n%s", str(schedule).c_str());
+  console::info("Makespan: %lu", find_makespan(schedule));
+  
   exit(0);
 }
