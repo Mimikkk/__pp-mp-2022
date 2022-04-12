@@ -5,6 +5,7 @@
 #include "domain/operators/unary.hpp"
 #include "domain/operators/binary.hpp"
 #include "domain/operators/nullary.hpp"
+#include "domain/heuristics/random_sample.hpp"
 
 fn main(i32 argc, byte **argv) -> i32 {
   if (argc != 2) {
@@ -24,15 +25,11 @@ fn main(i32 argc, byte **argv) -> i32 {
   console::info("UpperBound: %lu", instance.UpperBound);
   console::info("LowerBound: %lu", instance.LowerBound);
 
-  var order = instance.create_initial_order();
-  console::info("Order: %s", str(order).c_str());
-  order = apply_random(instance, order);
-  console::info("Order: %s", str(order).c_str());
-
-  let candidate = instance.create_candidate(order);
-  order = apply_genetic(instance, order, apply_random(instance));
+  let candidate = random_sample(instance, 1000000);
   console::log("\n%s", str(candidate.Schedule).c_str());
   console::info("Makespan: %lu", candidate.Makespan);
 
+  
+  
   exit(0);
 }

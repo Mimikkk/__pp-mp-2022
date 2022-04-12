@@ -13,14 +13,14 @@ private:
     return makespan;
   }
 public:
-  fn operator==(Candidate other) { return Order == other.Order; }
-  fn operator>(Candidate other) { return Makespan > other.Makespan; }
-  fn operator<(Candidate other) { return Makespan < other.Makespan; }
+  fn operator==(Candidate other) const { return Order == other.Order; }
+  fn operator>(Candidate other) const { return Makespan < other.Makespan; }
+  fn operator<(Candidate other) const { return Makespan > other.Makespan; }
 
   Candidate(const vector<usize> &order, const vector<vector<usize>> &schedule)
     : Makespan(find_makespan(schedule)), Order(move(order)), Schedule(move(schedule)) {}
 
-  const usize Makespan;
-  const vector<usize> Order;
-  const vector<vector<usize>> Schedule;
+  usize Makespan;
+  vector<usize> Order;
+  vector<vector<usize>> Schedule;
 };
