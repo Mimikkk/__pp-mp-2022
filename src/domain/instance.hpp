@@ -38,7 +38,6 @@ private:
 
     return bound;
   }
-
   static fn find_upper_bound(vector<vector<usize>> jobs) {
     usize bound = 0;
 
@@ -81,6 +80,7 @@ public:
   const usize N;
   const usize M;
   const vector<vector<usize>> Jobs;
+
   Instance(const string &name, const vector<vector<usize>> &jobs)
     : N(jobs.size()), M(jobs.front().size() / 2),
       Name(move(name)),
