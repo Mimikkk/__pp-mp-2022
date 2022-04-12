@@ -45,7 +45,7 @@ inline fn str(const char *format, ...) {
   va_end(arguments);
   return buffer;
 }
-inline string str(vector<usize> order) {
+inline fn str(vector<usize> order) {
   var begin = order.begin();
   let end = order.end();
 
@@ -55,7 +55,7 @@ inline string str(vector<usize> order) {
   ss << ']';
   return ss.str();
 }
-inline string str(vector<vector<usize>> schedule) {
+inline fn str(vector<vector<usize>> schedule) {
   var begin = schedule.begin();
   let end = schedule.end();
 

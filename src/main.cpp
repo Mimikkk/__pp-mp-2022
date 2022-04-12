@@ -11,7 +11,7 @@ fn main(i32 argc, byte **argv) -> i32 {
     exit(1);
   }
   var filename = argv[1];
-  console::log("%d", __cplusplus);
+
   thread::initialize();
 
   var path = fs::current_path() / "resources/instances" / filename;
@@ -19,15 +19,17 @@ fn main(i32 argc, byte **argv) -> i32 {
 
   var instance = OrlibReader::read(path);
   console::info("Read instance: \n%s", instance.as_string().c_str());
-  console::info("UpperBound: %lu", find_upper_bound(instance));
-  console::info("LowerBound: %lu", find_lower_bound(instance));
+  console::info("UpperBound: %lu", instance.UpperBound);
+  console::info("LowerBound: %lu", instance.LowerBound);
 
-  let order = create_order(instance);
+  let order = instance.create_initial_order();
   console::info("Order: %s", str(order).c_str());
 
-  let schedule = create_schedule(instance, order);
+  let candidate = instance.create_candidate(order);
+  let schedule = candidate.Schedule;
+
   console::log("\n%s", str(schedule).c_str());
   console::info("Makespan: %lu", find_makespan(schedule));
-  
+
   exit(0);
 }
