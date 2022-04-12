@@ -14,10 +14,10 @@ fn main(i32 argc, byte **argv) -> i32 {
 
   thread::initialize();
 
-  var path = fs::current_path() / "resources/instances" / filename;
+  let path = fs::current_path() / "resources/instances" / filename;
   console::event("Reading: file '%s' at '%s'", path.filename().c_str(), path.c_str());
 
-  var instance = OrlibReader::read(path);
+  let instance = OrlibReader::read(path);
   console::info("Read instance: \n%s", instance.as_string().c_str());
   console::info("UpperBound: %lu", instance.UpperBound);
   console::info("LowerBound: %lu", instance.LowerBound);
@@ -26,10 +26,9 @@ fn main(i32 argc, byte **argv) -> i32 {
   console::info("Order: %s", str(order).c_str());
 
   let candidate = instance.create_candidate(order);
-  let schedule = candidate.Schedule;
 
-  console::log("\n%s", str(schedule).c_str());
-  console::info("Makespan: %lu", find_makespan(schedule));
+  console::log("\n%s", str(candidate.Schedule).c_str());
+  console::info("Makespan: %lu", candidate.Makespan);
 
   exit(0);
 }

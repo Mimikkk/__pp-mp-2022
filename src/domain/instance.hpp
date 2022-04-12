@@ -50,9 +50,8 @@ private:
     return bound;
   }
 
-  fn create_schedule(const vector<usize> &order) {
+  fn create_schedule(const vector<usize> &order) const {
     var schedule = vector<vector<usize>>(M, vector<usize>(3 * N, 0));
-    console::log("M, 3*N: %lu %lu", schedule.size(), schedule[0].size());
 
     vector<usize> machine_state(M, 0);
     vector<usize> machine_time(M, 0);
@@ -89,7 +88,7 @@ public:
       UpperBound(find_upper_bound(jobs)),
       Jobs(move(jobs)) {}
 
-  fn as_string() {
+  fn as_string() const {
     std::stringstream ss;
     ss << "Instance " << Name << ": " << N << " jobs, " << M << " machines." << std::endl;
     for (auto job: Jobs) {
@@ -102,14 +101,11 @@ public:
     return ss.str();
   }
 
-  fn create_candidate(const vector<usize> &order) -> Candidate {
-    let schedule = create_schedule(order);
-    let makespan = find_makespan(schedule);
-
-    return {makespan, order, schedule};
+  fn create_candidate(const vector<usize> &order) const -> Candidate {
+    return Candidate(order, create_schedule(order));
   }
 
-  fn create_initial_order() {
+  fn create_initial_order() const {
     vector<usize> order(N * M);
     for (usize i = 0; i < N; ++i) std::fill_n(order.begin() + (i * M), M, i);
     return order;
