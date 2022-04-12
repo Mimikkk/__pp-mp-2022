@@ -11,6 +11,8 @@ using uptr = std::unique_ptr<Tp, Dp>;
 template<typename Tp>
 using sptr = std::shared_ptr<Tp>;
 using std::move;
+using std::string;
+namespace fs = std::filesystem;
 
 typedef double f64;
 typedef float f32;
