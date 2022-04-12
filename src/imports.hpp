@@ -14,5 +14,4 @@
 #include <omp.h>
 #include <filesystem>
 #include <fstream>
-#include <ranges>
 #include "utils/common.hpp"

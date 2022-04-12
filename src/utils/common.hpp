@@ -2,7 +2,6 @@
 #include "../imports.hpp"
 #include <stdnoreturn.h>
 
-using std::optional;
 using std::vector;
 
 template<typename Tp, typename Dp = std::default_delete<Tp>>

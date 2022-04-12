@@ -2,17 +2,14 @@
 #include "../imports.hpp"
 
 class Instance {
+private:
 public:
-  string Name;
-  usize N;
-  usize M;
-  vector <vector<usize>> Jobs;
-  Instance(string name, vector <vector<usize>> jobs) {
-    Jobs = jobs;
-    Name = name;
-    N = jobs.size();
-    M = jobs.front().size() / 2;
-  }
+  const string Name;
+  const usize N;
+  const usize M;
+  const vector<vector<usize>> Jobs;
+  Instance(const string &name, const vector<vector<usize>> &jobs)
+    : N(jobs.size()), M(jobs.front().size() / 2), Jobs(move(jobs)), Name(move(name)) {}
 
   fn as_string() {
     std::stringstream ss;
