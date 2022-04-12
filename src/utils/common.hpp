@@ -46,3 +46,23 @@ inline fn str(const char *format, ...) {
   va_end(arguments);
   return buffer;
 }
+inline string str(vector<usize> order) {
+  var begin = order.begin();
+  let end = order.end();
+
+  std::stringstream ss;
+  ss << '[' << *begin;
+  for (++begin; begin != end; ++begin) ss << ", " << *begin;
+  ss << ']';
+  return ss.str();
+}
+inline string str(vector<vector<usize>> schedule) {
+  var begin = schedule.begin();
+  let end = schedule.end();
+
+  std::stringstream ss;
+  ss << '[' << str(*begin);
+  for (++begin; begin != end; ++begin) ss << ",\n " << str(*begin);
+  ss << ']';
+  return ss.str();
+}
