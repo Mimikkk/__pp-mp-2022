@@ -98,6 +98,8 @@ public:
       }
       ss << std::endl;
     }
+    ss << "Lower bound: " << LowerBound << std::endl;
+    ss << "Upper bound: " << UpperBound << std::endl;
     return ss.str();
   }
 

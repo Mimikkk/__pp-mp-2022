@@ -3,18 +3,19 @@
 #include "../instance.hpp"
 #include "../operators/nullary.hpp"
 #include "../operators/unary.hpp"
+#include "../../utils/color.hpp"
 
 fn random_sample(const Instance &instance, usize iterations) {
 
   var best_solution = instance.create_candidate(apply_random(instance));
-  console::log("Solution with: %lu", best_solution.Makespan);
+  console::info("Solution with: %s%lu", color::Silver, best_solution.Makespan);
 
   while (--iterations) {
     let solution = instance.create_candidate(apply_random(instance));
 
     if (solution > best_solution) {
       best_solution = move(solution);
-      console::log("New best solution with: %lu", best_solution.Makespan);
+      console::event("New best solution with: %s%lu", color::Silver, best_solution.Makespan);
     }
   }
 

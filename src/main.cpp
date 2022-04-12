@@ -2,10 +2,9 @@
 #include "domain/thread.hpp"
 #include "domain/orlib_reader.hpp"
 #include "utils/console.hpp"
-#include "domain/operators/unary.hpp"
-#include "domain/operators/binary.hpp"
 #include "domain/operators/nullary.hpp"
 #include "domain/heuristics/random_sample.hpp"
+#include "utils/color.hpp"
 
 fn main(i32 argc, byte **argv) -> i32 {
   if (argc != 2) {
@@ -18,18 +17,34 @@ fn main(i32 argc, byte **argv) -> i32 {
   thread::initialize();
 
   let path = fs::current_path() / "resources/instances" / filename;
-  console::event("Reading: file '%s' at '%s'", path.filename().c_str(), path.c_str());
+  console::info("Reading: file '%s' at '%s'", path.filename().c_str(), path.c_str());
 
   let instance = OrlibReader::read(path);
   console::info("Read instance: \n%s", instance.as_string().c_str());
-  console::info("UpperBound: %lu", instance.UpperBound);
-  console::info("LowerBound: %lu", instance.LowerBound);
 
-  let candidate = random_sample(instance, 1000000);
-  console::log("\n%s", str(candidate.Schedule).c_str());
-  console::info("Makespan: %lu", candidate.Makespan);
 
-  
-  
+  var best = instance.create_candidate(instance.create_initial_order());
+  var best_id = 0;
+
+  #pragma omp parallel default(shared)
+  {
+    let candidate = random_sample(instance, 1000000);
+    console::info("\n%s", str(candidate.Schedule).c_str());
+    console::info("Makespan: %s%lu", color::Silver, candidate.Makespan);
+
+    #pragma omp critical
+    {
+      if (candidate > best) {
+        best = move(candidate);
+        best_id = thread::ID;
+        console::event("Has better candidate than %s%d: %lu", color::dynamic(best_id).get(), best_id, best.Makespan);
+      }
+    }
+  }
+
+  console::event("\n%s", str(best.Schedule).c_str());
+  console::event("Best candidate: %s%lu made by %s%02d",
+                 color::Silver, best.Makespan, color::dynamic(best_id).get(), best_id);
+
   exit(0);
 }
