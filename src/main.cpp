@@ -11,7 +11,7 @@ fn main(i32 argc, byte **argv) -> i32 {
     exit(1);
   }
   var filename = argv[1];
-
+  console::log("%d", __cplusplus);
   thread::initialize();
 
   var path = fs::current_path() / "resources/instances" / filename;

@@ -106,6 +106,6 @@ fn create_order(const Instance &instance) {
   return order;
 }
 
-fn shuffle_order(const vector<usize> &order) {
+fn shuffle_order(vector<usize> order) {
   std::shuffle(order.begin(), order.end(), std::mt19937(std::random_device()()));
 }
