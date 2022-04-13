@@ -34,20 +34,26 @@ fn random_sample_threaded(const Instance &instance, f64 time) {
 
   #pragma omp parallel default(shared)
   {
-    loop {
-      let solution = instance.create_candidate(apply_random(instance));
-
-      #pragma omp critical
+    f64 current = time;
+    while (current > 0) {
+      #pragma omp single
       {
-        if (solution > best_solution) {
-          best_solution = move(solution);
-
-          console::event("New best solution with: %s%lu", color::Silver, best_solution.Makespan);
-          console::event("Iterations left: %s%lf", color::Silver, time);
-        }
+        current = passed(time);
       }
 
-      if (passed(time) <= 0) break;
+      let solution = instance.create_candidate(apply_random(instance));
+
+      if (solution > best_solution) {
+        #pragma omp critical
+        {
+          if (solution > best_solution) {
+            best_solution = move(solution);
+
+            console::event("New best solution with: %s%lu", color::Silver, best_solution.Makespan);
+            console::event("Timestamp: %s%.2lf%s/%s%.2lf", color::Silver, current, color::Yellow, color::Silver, time);
+          }
+        }
+      }
     }
   }
 

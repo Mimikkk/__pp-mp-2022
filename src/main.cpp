@@ -28,7 +28,7 @@ fn main(i32 argc, byte **argv) -> i32 {
   var best_id = 0;
 
 
-  let candidate = random_sample(instance, 60);
+  let candidate = random_sample_threaded(instance, 60);
 //  #pragma omp parallel default(shared)
 //  {
 //    let candidate = random_sample_threaded(instance, 1000000, 1676);
