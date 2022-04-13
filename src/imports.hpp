@@ -14,4 +14,5 @@
 #include <omp.h>
 #include <filesystem>
 #include <fstream>
+#include <cstdio>
 #include "utils/common.hpp"

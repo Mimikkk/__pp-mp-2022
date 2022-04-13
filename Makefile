@@ -3,7 +3,7 @@
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
 SOURCES=$(call rwildcard, src, *.cpp)
 HEADERS=$(call rwildcard, src, *.hpp)
-FLAGS=-g -lstdc++ -std=gnu++2b -fopenmp
+FLAGS=-g -lstdc++ -lm -std=gnu++2b -fopenmp
 
 all: build read-la01.txt
 

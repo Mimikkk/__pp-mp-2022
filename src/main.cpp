@@ -27,21 +27,23 @@ fn main(i32 argc, byte **argv) -> i32 {
   var best = instance.create_candidate(instance.create_initial_order());
   var best_id = 0;
 
-  #pragma omp parallel default(shared)
-  {
-    let candidate = hill_climber(instance, 1000000, 1676);
-    console::info("\n%s", str(candidate.Schedule).c_str());
-    console::info("Makespan: %s%lu", color::Silver, candidate.Makespan);
 
-    #pragma omp critical
-    {
-      if (candidate > best) {
-        best = move(candidate);
-        best_id = thread::ID;
-        console::event("Has better candidate than %s%d: %lu", color::dynamic(best_id).get(), best_id, best.Makespan);
-      }
-    }
-  }
+  let candidate = random_sample(instance, 60);
+//  #pragma omp parallel default(shared)
+//  {
+//    let candidate = random_sample_threaded(instance, 1000000, 1676);
+//    console::info("\n%s", str(candidate.Schedule).c_str());
+//    console::info("Makespan: %s%lu", color::Silver, candidate.Makespan);
+//
+//    #pragma omp critical
+//    {
+//      if (candidate > best) {
+//        best = move(candidate);
+//        best_id = thread::ID;
+//        console::event("Has better candidate than %s%d: %lu", color::dynamic(best_id).get(), best_id, best.Makespan);
+//      }
+//    }
+//  }
 
   console::info("Read instance: \n%s", instance.as_string().c_str());
   console::event("\n%s", str(best.Schedule).c_str());
