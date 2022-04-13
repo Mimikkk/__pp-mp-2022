@@ -12,4 +12,4 @@ build: $(SOURCES) $(HEADERS)
 
 read-la01.txt:
 	cd ./bin
-	./solver la01.txt
+	./solver abz5.txt

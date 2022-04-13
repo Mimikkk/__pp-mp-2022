@@ -8,7 +8,7 @@
 fn random_sample(const Instance &instance, usize iterations) {
 
   var best_solution = instance.create_candidate(apply_random(instance));
-  console::info("Solution with: %s%lu", color::Silver, best_solution.Makespan);
+  console::info("Initial solution with: %s%lu", color::Silver, best_solution.Makespan);
 
   while (--iterations) {
     let solution = instance.create_candidate(apply_random(instance));

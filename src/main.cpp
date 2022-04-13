@@ -5,6 +5,7 @@
 #include "domain/operators/nullary.hpp"
 #include "domain/heuristics/random_sample.hpp"
 #include "utils/color.hpp"
+#include "domain/heuristics/hill_climber.hpp"
 
 fn main(i32 argc, byte **argv) -> i32 {
   if (argc != 2) {
@@ -28,7 +29,7 @@ fn main(i32 argc, byte **argv) -> i32 {
 
   #pragma omp parallel default(shared)
   {
-    let candidate = random_sample(instance, 1000000);
+    let candidate = hill_climber(instance, 1000000, 1676);
     console::info("\n%s", str(candidate.Schedule).c_str());
     console::info("Makespan: %s%lu", color::Silver, candidate.Makespan);
 
@@ -42,6 +43,7 @@ fn main(i32 argc, byte **argv) -> i32 {
     }
   }
 
+  console::info("Read instance: \n%s", instance.as_string().c_str());
   console::event("\n%s", str(best.Schedule).c_str());
   console::event("Best candidate: %s%lu made by %s%02d",
                  color::Silver, best.Makespan, color::dynamic(best_id).get(), best_id);
