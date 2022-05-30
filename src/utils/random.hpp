@@ -24,25 +24,23 @@ namespace rnd {
     return std::bernoulli_distribution(p);
   }
 
-  inline fn use(auto distribution) {
-    static var gen = generator();
-    return distribution(gen);
-  }
-
   template<typename T = f32>
   inline fn real(T min = 0.0, T max = 1.0) {
     static var uniform = create_f_uniform<T>(min, max);
-    return use(uniform);
+    static var gen = generator();
+    return uniform(gen);
   }
 
   template<typename T = i32>
   inline fn integer(T min = 0, T max = 1) {
     static var uniform = create_i_uniform<T>(min, max);
-    return use(uniform);
+    static var gen = generator();
+    return uniform(gen);
   }
 
   inline fn boolean(f64 limit = 0.5) {
     static var uniform = create_b_uniform(limit);
-    return use(uniform);
+    static var gen = generator();
+    return uniform(gen);
   }
 }

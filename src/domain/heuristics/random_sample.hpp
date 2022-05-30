@@ -27,6 +27,7 @@ fn random_sample(const Instance &instance, f64 time) {
   return best_solution;
 }
 
+#ifndef cuda
 fn random_sample_threaded(const Instance &instance, f64 time, i32 *best_id) {
   var best_solution = instance.create_candidate(apply_random(instance));
   *best_id = omp_get_thread_num();
@@ -58,3 +59,4 @@ fn random_sample_threaded(const Instance &instance, f64 time, i32 *best_id) {
 
   return best_solution;
 }
+#endif

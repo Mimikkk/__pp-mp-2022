@@ -1,15 +1,28 @@
 .ONESHELL: 
 
 rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
-SOURCES=$(call rwildcard, src, *.cpp)
-HEADERS=$(call rwildcard, src, *.hpp)
-FLAGS=-g -lstdc++ -lm -std=gnu++2b -fopenmp
+MP_SOURCES=$(call rwildcard, src, *.cpp)
+MP_HEADERS=$(call rwildcard, src, *.hpp)
+MP_FLAGS=-g -lstdc++ -lm -std=gnu++2b -fopenmp
 
-all: build read-la01.txt
+mp: mp-build mp-run
 
-build: $(SOURCES) $(HEADERS)
-	gcc-11 $(SOURCES) $(FLAGS) -o bin/solver
+mp-build: $(MP_SOURCES) $(MP_HEADERS)
+	gcc-11 $(MP_SOURCES) $(MP_FLAGS) -o bin/solver-mp
 
-read-la01.txt:
+mp-run:
 	cd ./bin
-	./solver abz5.txt
+	./solver-mp abz5.txt
+
+CUDA_SOURCES=$(call rwildcard, src, *.cpp)
+CUDA_HEADERS=$(call rwildcard, src, *.hpp)
+CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -D cuda
+
+cuda: cuda-build cuda-run
+
+cuda-build: $(CUDA_SOURCES) $(CUDA_HEADERS)
+	nvcc ./src/main.cu $(CUDA_SOURCES) $(CUDA_FLAGS) -o bin/solver-cuda
+
+cuda-run:
+	cd ./bin
+	./solver-cuda abz5.txt
