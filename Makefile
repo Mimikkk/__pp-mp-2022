@@ -27,11 +27,7 @@ CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -D cuda
 cuda: cuda-build cuda-run
 
 cuda-build: $(CUDA_SOURCES) $(CUDA_HEADERS)
-	export PATH=/usr/local/cuda-11.7/bin${PATH:+:${PATH}}
-	export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-	
-	nvcc -V
-	nvcc ./src/main.cu $(CUDA_SOURCES) $(CUDA_FLAGS) -o ./bin/solver-cuda
+	nvcc ./src/main.cu $(CUDA_SOURCES) $(CUDA_FLAGS) -D cuda -o ./bin/solver-cuda
 
 cuda-run:
 	cd ./bin

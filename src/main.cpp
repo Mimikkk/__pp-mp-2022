@@ -33,7 +33,7 @@ fn main(i32 argc, byte **argv) -> i32 {
   console::event("Best candidate: %s%lu %smade by %s%02d",
                  color::Silver, best.Makespan, color::Green, color::dynamic(best_id).get(), best_id);
 
-  path = fs::current_path() / "solutions/random_sample" / str("%d_%s.json", best.Makespan, instance.Name.c_str()).get();
+  path = fs::current_path() / "solutions/random_sample" / str("mp_%d_%s.json", best.Makespan, instance.Name.c_str()).get();
 
   CandidateWriter::write(path, instance, best);
 }
