@@ -13,10 +13,15 @@ namespace console {
     va_end(arguments);                \
     } while (false)
 
+  #ifndef cuda
   fn nfo() {
-    return str("%s%02d %s:", dynamic(thread::ID).get(), thread::ID, Yellow);
+    return str("MP %s%02d %s:", dynamic(thread::ID).get(), thread::ID, Yellow);
   }
-
+  #else
+  fn nfo() {
+    return str("CUDA %s:", Yellow);
+  }
+  #endif
   fn log(const char *format, ...) -> void {
     printfln(str("%sLog   %s %s%s", Magenta, nfo().get(), Cyan, format).get());
   }
