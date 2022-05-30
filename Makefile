@@ -14,6 +14,12 @@ mp-run:
 	cd ./bin
 	./solver-mp abz5.txt
 
+all: cuda
+
+clean: 
+	cd ./bin
+	rm solver-cuda	
+
 CUDA_SOURCES=$(call rwildcard, src, *.cpp)
 CUDA_HEADERS=$(call rwildcard, src, *.hpp)
 CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -D cuda
@@ -21,7 +27,11 @@ CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -D cuda
 cuda: cuda-build cuda-run
 
 cuda-build: $(CUDA_SOURCES) $(CUDA_HEADERS)
-	nvcc ./src/main.cu $(CUDA_SOURCES) $(CUDA_FLAGS) -o bin/solver-cuda
+	export PATH=/usr/local/cuda-11.7/bin${PATH:+:${PATH}}
+	export LD_LIBRARY_PATH=/usr/local/cuda-11.7/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+	
+	nvcc -V
+	nvcc ./src/main.cu $(CUDA_SOURCES) $(CUDA_FLAGS) -o ./bin/solver-cuda
 
 cuda-run:
 	cd ./bin
