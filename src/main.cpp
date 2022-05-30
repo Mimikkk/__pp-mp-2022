@@ -1,6 +1,7 @@
 #include "imports.hpp"
 #include "domain/thread.hpp"
 #include "domain/orlib_reader.hpp"
+#include "domain/candidate_writer.hpp"
 #include "utils/console.hpp"
 #include "domain/operators/nullary.hpp"
 #include "domain/heuristics/random_sample.hpp"
@@ -17,19 +18,21 @@ fn main(i32 argc, byte **argv) -> i32 {
 
   thread::initialize();
 
-  let path = fs::current_path() / "resources/instances" / filename;
+  var path = fs::current_path() / "resources/instances" / filename;
   console::info("Reading: file '%s' at '%s'", path.filename().c_str(), path.c_str());
 
   let instance = OrlibReader::read(path);
   console::info("Read instance: \n%s", instance.as_string().c_str());
 
   var best_id = 0;
-  let best = random_sample_threaded(instance, 5, &best_id);
+  let best = random_sample_threaded(instance, 1, &best_id);
 
   console::info("Read instance: \n%s", instance.as_string().c_str());
   console::event("\n%s", str(best.Schedule).c_str());
   console::event("Best candidate: %s%lu %smade by %s%02d",
                  color::Silver, best.Makespan, color::Green, color::dynamic(best_id).get(), best_id);
 
-  exit(0);
+  path = fs::current_path() / "solutions/random_sample" / str("%d_%s.json", best.Makespan, instance.Name.c_str()).get();
+
+  CandidateWriter::write(path, instance, best);
 }
