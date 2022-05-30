@@ -5,12 +5,11 @@
 #include "../operators/unary.hpp"
 #include "../../utils/color.hpp"
 
-fn passed(f64 since) -> f64 {
-  return since - std::clock() / (f64) CLOCKS_PER_SEC;
+fn passed(f64 since, i32 thread_count = 1) -> f64 {
+  return since - std::clock() / (f64) CLOCKS_PER_SEC / (f64) thread_count;
 }
 
 fn random_sample(const Instance &instance, f64 time) {
-
   var best_solution = instance.create_candidate(apply_random(instance));
   console::info("Initial solution with: %s%lu", color::Silver, best_solution.Makespan);
 
@@ -28,19 +27,15 @@ fn random_sample(const Instance &instance, f64 time) {
   return best_solution;
 }
 
-fn random_sample_threaded(const Instance &instance, f64 time) {
+fn random_sample_threaded(const Instance &instance, f64 time, i32 *best_id) {
   var best_solution = instance.create_candidate(apply_random(instance));
+  *best_id = omp_get_thread_num();
+
   console::info("Initial solution with: %s%lu", color::Silver, best_solution.Makespan);
 
   #pragma omp parallel default(shared)
   {
-    f64 current = time;
-    while (current > 0) {
-      #pragma omp single
-      {
-        current = passed(time);
-      }
-
+    loop {
       let solution = instance.create_candidate(apply_random(instance));
 
       if (solution > best_solution) {
@@ -48,12 +43,16 @@ fn random_sample_threaded(const Instance &instance, f64 time) {
         {
           if (solution > best_solution) {
             best_solution = move(solution);
+            *best_id = omp_get_thread_num();
 
             console::event("New best solution with: %s%lu", color::Silver, best_solution.Makespan);
-            console::event("Timestamp: %s%.2lf%s/%s%.2lf", color::Silver, current, color::Yellow, color::Silver, time);
+            console::event("Timestamp: %s%.2lf%s/%s%.2lf",
+                           color::Silver, passed(time, omp_get_num_threads()), color::Yellow, color::Silver, time);
           }
         }
       }
+
+      if (passed(time, omp_get_num_threads()) <= 0) break;
     }
   }
 
