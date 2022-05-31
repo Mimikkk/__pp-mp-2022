@@ -20,14 +20,15 @@ clean:
 	cd ./bin
 	rm solver-cuda	
 
+CUDA_FILES=$(call rwildcard, src, *.cu)
 CUDA_SOURCES=$(call rwildcard, src, *.cpp)
 CUDA_HEADERS=$(call rwildcard, src, *.hpp)
-CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -D cuda
+CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -arch=sm_70 -D cuda 
 
 cuda: cuda-build cuda-run
 
-cuda-build: $(CUDA_SOURCES) $(CUDA_HEADERS)
-	nvcc ./src/main.cu $(CUDA_SOURCES) $(CUDA_FLAGS) -D cuda -o ./bin/solver-cuda
+cuda-build: $(CUDA_SOURCES) $(CUDA_HEADERS) $(CUDA_FILES)
+	nvcc $(CUDA_FILES) $(CUDA_SOURCES) $(CUDA_FLAGS) -D cuda -o ./bin/solver-cuda
 
 cuda-run:
 	cd ./bin
