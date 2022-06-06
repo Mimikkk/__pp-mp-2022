@@ -8,7 +8,7 @@ MP_FLAGS=-g -lstdc++ -lm -std=gnu++2b -fopenmp
 mp: mp-build mp-run
 
 mp-build: $(MP_SOURCES) $(MP_HEADERS)
-	gcc-11 $(MP_SOURCES) $(MP_FLAGS) -o bin/solver-mp
+	gcc $(MP_SOURCES) $(MP_FLAGS) -o bin/solver-mp
 
 mp-run:
 	cd ./bin
@@ -18,6 +18,7 @@ all: cuda
 
 clean: 
 	cd ./bin
+	rm solver-mp
 	rm solver-cuda	
 
 CUDA_FILES=$(call rwildcard, src, *.cu)
@@ -28,7 +29,7 @@ CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -arch=sm_70 -D cuda
 cuda: cuda-build cuda-run
 
 cuda-build: $(CUDA_SOURCES) $(CUDA_HEADERS) $(CUDA_FILES)
-	nvcc $(CUDA_FILES) $(CUDA_SOURCES) $(CUDA_FLAGS) -D cuda -o ./bin/solver-cuda
+	/usr/local/cuda-11.7/bin/nvcc $(CUDA_FILES) $(CUDA_SOURCES) $(CUDA_FLAGS) -D cuda -o ./bin/solver-cuda
 
 cuda-run:
 	cd ./bin
