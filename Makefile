@@ -12,7 +12,10 @@ mp-build: $(MP_SOURCES) $(MP_HEADERS)
 
 mp-run:
 	cd ./bin
-	./solver-mp abz5.txt
+	./solver-mp $(instance)
+
+mp-run-abz5:
+	mp-run instance=abz5.txt
 
 all: cuda
 
@@ -33,4 +36,7 @@ cuda-build: $(CUDA_SOURCES) $(CUDA_HEADERS) $(CUDA_FILES)
 
 cuda-run:
 	cd ./bin
-	./solver-cuda abz5.txt
+	./solver-cuda $(instance)
+
+cuda-run-abz5:
+	cuda-run instance=abz5.txt
