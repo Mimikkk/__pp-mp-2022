@@ -4,7 +4,7 @@
 
 class CandidateWriter {
 public:
-  static fn write(fs::path path, Instance instance, Candidate candidate) {
+  static fn write(const fs::path& path, const Instance& instance, const Candidate& candidate) {
     let json = str("{\n"
                    "  \"info\": {\n"
                    "    \"name\": \"%s\",\n"

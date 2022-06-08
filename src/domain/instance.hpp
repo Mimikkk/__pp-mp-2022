@@ -1,4 +1,6 @@
 #pragma once
+#include <utility>
+
 #include "../imports.hpp"
 #include "candidate.hpp"
 
@@ -81,17 +83,17 @@ public:
   const usize M;
   const vector<vector<usize>> Jobs;
 
-  Instance(const string &name, const vector<vector<usize>> &jobs)
+  Instance(string name, const vector<vector<usize>> &jobs)
     : N(jobs.size()), M(jobs.front().size() / 2),
-      Name(move(name)),
+      Name(std::move(name)),
       LowerBound(find_lower_bound(jobs)),
       UpperBound(find_upper_bound(jobs)),
-      Jobs(move(jobs)) {}
+      Jobs(jobs) {}
 
-  fn as_string() const {
+  [[nodiscard]] fn as_string() const {
     std::stringstream ss;
     ss << "Instance " << Name << ": " << N << " jobs, " << M << " machines." << std::endl;
-    for (auto job: Jobs) {
+    for (const auto& job: Jobs) {
       ss << "- ";
       for (auto machine: job) {
         ss << machine << " ";
@@ -103,11 +105,11 @@ public:
     return ss.str();
   }
 
-  fn create_candidate(const vector<usize> &order) const -> Candidate {
+  [[nodiscard]] fn create_candidate(const vector<usize> &order) const {
     return Candidate(order, create_schedule(order));
   }
 
-  fn create_initial_order() const {
+  [[nodiscard]] fn create_initial_order() const {
     vector<usize> order(N * M);
     for (usize i = 0; i < N; ++i) std::fill_n(order.begin() + (i * M), M, i);
     return order;

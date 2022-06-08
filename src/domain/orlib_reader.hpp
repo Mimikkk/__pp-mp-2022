@@ -4,12 +4,12 @@
 
 class OrlibReader {
 public:
-  static fn read(fs::path path) -> Instance {
+  static fn read(const fs::path& path) {
     if (not is_regular_file(path)) throw std::domain_error("Not a file");
     return Instance(path.stem().string(), read_jobs(path));
   }
 private:
-  static fn read_jobs(fs::path path) -> vector<vector<usize>> {
+  static fn read_jobs(const fs::path& path) -> vector<vector<usize>> {
     std::ifstream infile(path);
     usize n, m;
     infile >> n >> m;

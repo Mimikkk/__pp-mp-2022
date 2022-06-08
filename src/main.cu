@@ -1,13 +1,10 @@
 #ifdef cuda
 #include "imports.hpp"
-#include "domain/thread.hpp"
 #include "domain/orlib_reader.hpp"
 #include "domain/candidate_writer.hpp"
 #include "utils/console.hpp"
-#include "domain/operators/nullary.hpp"
-#include "domain/heuristics/random_sample.hpp"
 #include "utils/color.hpp"
-#include "domain/heuristics/hill_climber.hpp"
+#include "domain/heuristics/cuda_random_sample.cu"
 
 fn main(i32 argc, byte **argv) -> i32 {
   if (argc != 2) {
@@ -22,7 +19,7 @@ fn main(i32 argc, byte **argv) -> i32 {
   let instance = OrlibReader::read(path);
   console::info("Read instance: \n%s", instance.as_string().c_str());
 
-  let best = random_sample(instance, 1);
+  let best = cuda_random_sample(instance, 1);
 
   console::info("Read instance: \n%s", instance.as_string().c_str());
   console::event("\n%s", str(best.Schedule).c_str());
