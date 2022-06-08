@@ -27,12 +27,14 @@ clean:
 CUDA_FILES=$(call rwildcard, src, *.cu)
 CUDA_SOURCES=$(call rwildcard, src, *.cpp)
 CUDA_HEADERS=$(call rwildcard, src, *.hpp)
-CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -arch=sm_70 -D cuda 
+CUDA_FLAGS=-g -lstdc++ -lm -std=c++17 -arch=sm_37 -D cuda -O3 -Xcompiler -Wall -Xcompiler -Wextra -m64
 
 cuda: cuda-build cuda-run
 
 cuda-build: $(CUDA_SOURCES) $(CUDA_HEADERS) $(CUDA_FILES)
+	@echo "Building..."
 	/usr/local/cuda-11.7/bin/nvcc $(CUDA_FILES) $(CUDA_SOURCES) $(CUDA_FLAGS) -D cuda -o ./bin/solver-cuda
+	@echo "Built!"
 
 cuda-run:
 	cd ./bin

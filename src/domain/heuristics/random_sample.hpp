@@ -4,6 +4,7 @@
 #include "../operators/nullary.hpp"
 #include "../operators/unary.hpp"
 #include "../../utils/color.hpp"
+#include "../thread.hpp"
 
 fn passed(f64 since, i32 thread_count = 1) -> f64 {
   return since - std::clock() / (f64) CLOCKS_PER_SEC / (f64) thread_count;
@@ -43,12 +44,12 @@ fn random_sample_threaded(const Instance &instance, f64 time, i32 *best_id) {
         #pragma omp critical
         {
           if (solution > best_solution) {
-            best_solution = move(solution);
-            *best_id = omp_get_thread_num();
+            best_solution = solution;
+            *best_id = thread::ID;
 
             console::event("New best solution with: %s%lu", color::Silver, best_solution.Makespan);
             console::event("Timestamp: %s%.2lf%s/%s%.2lf",
-                           color::Silver, passed(time, omp_get_num_threads()), color::Yellow, color::Silver, time);
+                           color::Silver, passed(time, thread::ID), color::Yellow, color::Silver, time);
           }
         }
       }

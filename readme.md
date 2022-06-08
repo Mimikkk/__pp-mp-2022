@@ -43,7 +43,9 @@ zadań Gantt'a.
 
 - Wykorzystanie języka C++
 - Wykorzystanie technologii OpenMPI
+  - Równoległe przeszukiwanie stanu problemu JSSP
 - Wykorzystanie technologii NVIDIA-Cuda
+  - Problem redukcji danych z wykorzystaniem GPU
 
 ## Uruchamianie
 
@@ -51,11 +53,11 @@ zadań Gantt'a.
 
 - C++ w standardzie 17
 - Python 3.8+ Do wyświetlania harmonogramu
-- Do części NVIDIA-cuda
-    - Karta graficzna wspierająca CUDA
-    - wersja CUDA >= 11.7
 - Do części OpenMPI
     - system operacyjny linux
+- Do części NVIDIA-cuda
+  - Karta graficzna wspierająca CUDA
+  - wersja CUDA >= 11.7
 
 ### Komendy
 
@@ -85,16 +87,16 @@ zadań Gantt'a.
 
 - Skrót na obie operacje
 
-> make cuda instance=nazwa_instancji.txt
+> make cuda <liczby...>
 
 #### Wyświetlanie harmonogramu wyniku
 
-> python3 ./bin/gantt.py <odczyt: ścieżka_relatywna do folderu solutions> <tytuł: napis> <zapis: ścieżka_relatywna do folderu charts>
+> python3 ./gantt.py <odczyt: ścieżka_relatywna do folderu solutions> <tytuł: napis> <zapis: ścieżka_relatywna do folderu charts>
 
 - Przykład
 
-> python3 ./bin/gantt.py cuda_1487_abz5 cuda_1487 cuda_1487_abz5
+> python3 ./gantt.py mp_1476_abz5 OpenMP mp_1476_abz5
 
 <p style="display:flex; justify-items: center;">
-<img src="./bin/solutions/charts/cuda_1487_abz5.png" alt="Harmonogram">
+<img src="./bin/solutions/charts/mp_1476_abz5.png" alt="Harmonogram">
 </p>

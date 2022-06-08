@@ -6,7 +6,7 @@
 
 class Instance {
 private:
-  static fn find_lower_bound(vector<vector<usize>> jobs) {
+  static fn find_lower_bound(const vector<vector<usize>> &jobs) {
     let m = jobs.front().size() / 2;
     vector<usize> a(m, SIZE_MAX);
     vector<usize> b(m, SIZE_MAX);
@@ -40,7 +40,7 @@ private:
 
     return bound;
   }
-  static fn find_upper_bound(vector<vector<usize>> jobs) {
+  static fn find_upper_bound(const vector<vector<usize>> &jobs) {
     usize bound = 0;
 
     for (let &job: jobs) {
@@ -51,7 +51,7 @@ private:
     return bound;
   }
 
-  fn create_schedule(const vector<usize> &order) const {
+  [[nodiscard]] fn create_schedule(const vector<usize> &order) const {
     var schedule = vector<vector<usize>>(M, vector<usize>(3 * N, 0));
 
     vector<usize> machine_state(M, 0);
@@ -93,7 +93,7 @@ public:
   [[nodiscard]] fn as_string() const {
     std::stringstream ss;
     ss << "Instance " << Name << ": " << N << " jobs, " << M << " machines." << std::endl;
-    for (const auto& job: Jobs) {
+    for (const auto &job: Jobs) {
       ss << "- ";
       for (auto machine: job) {
         ss << machine << " ";
