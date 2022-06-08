@@ -1,4 +1,3 @@
-#ifndef cuda
 #include "imports.hpp"
 #include "domain/thread.hpp"
 #include "domain/orlib_reader.hpp"
@@ -37,4 +36,3 @@ fn main(i32 argc, byte **argv) -> i32 {
 
   CandidateWriter::write(path, instance, best);
 }
-#endif
