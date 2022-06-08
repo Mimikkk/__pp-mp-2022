@@ -93,7 +93,7 @@ zadań Gantt'a.
 
 - Przykład
 
-> python3 ./bin/gantt.py cuda_1427_abz5 cuda_1427 cuda_1427_abz5
+> python3 ./bin/gantt.py cuda_1487_abz5 cuda_1487 cuda_1487_abz5
 
 <p style="display:flex; justify-items: center;">
 <img src="./bin/solutions/charts/cuda_1487_abz5.png" alt="Harmonogram">
